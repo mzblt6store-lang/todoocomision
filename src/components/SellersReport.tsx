@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import { TrendingUp, Award, Clock, ShieldCheck, Download, Users, FileText } from 'lucide-react';
 import { DashboardStats, SalespersonStats } from '../types';
 
@@ -94,6 +93,9 @@ export default function SellersReport({ lastUpdated }: SellersReportProps) {
 
   const { summary, bySeller } = stats;
 
+  const maxSales = bySeller.length > 0 ? Math.max(...bySeller.map(s => s.total_sales), 1) : 1;
+  const maxCommission = bySeller.length > 0 ? Math.max(...bySeller.map(s => s.total_commission), 1) : 1;
+
   return (
     <div className="space-y-6" id="sellers-report">
       {/* 1. KPI Cards */}
@@ -177,63 +179,126 @@ export default function SellersReport({ lastUpdated }: SellersReportProps) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Sales Chart Card */}
         <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm lg:col-span-2">
-          <div className="flex justify-between items-center mb-6">
-            <div>
-              <h3 className="text-sm font-semibold text-slate-800 font-display">
-                Ventas y Comisiones Generadas por Vendedor
-              </h3>
-              <p className="text-[11px] text-slate-400">Comparativa del rendimiento comercial y su costo comisionable</p>
-            </div>
+          <div className="mb-4">
+            <h3 className="text-sm font-semibold text-slate-800 font-display">
+              Ventas y Comisiones Generadas por Vendedor
+            </h3>
+            <p className="text-[11px] text-slate-400">Comparativa del rendimiento comercial y su costo comisionable</p>
           </div>
 
-          <div className="h-80 w-full text-xs">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={bySeller}
-                margin={{ top: 20, right: 30, left: 10, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                <XAxis dataKey="name" stroke="#94a3b8" />
-                <YAxis stroke="#94a3b8" />
-                <Tooltip
-                  contentStyle={{ background: '#0f172a', borderRadius: '12px', border: 'none', color: '#fff' }}
-                  labelStyle={{ fontWeight: 'bold' }}
-                />
-                <Legend iconType="circle" />
-                <Bar dataKey="total_sales" name="Ventas Totales (S/)" fill="#6366f1" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="total_commission" name="Comisión Generada (S/)" fill="#10b981" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="space-y-4" id="sales-commissions-chart">
+            {bySeller.map((seller) => {
+              const salesPct = Math.max(3, (seller.total_sales / maxSales) * 100);
+              const commPct = Math.max(3, (seller.total_commission / maxCommission) * 100);
+
+              return (
+                <div key={seller.id} className="space-y-1.5 p-3 rounded-xl hover:bg-slate-50/50 border border-slate-100/40 transition-colors">
+                  <div className="flex justify-between items-center text-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="h-5 w-5 rounded-full bg-indigo-50 text-indigo-600 text-[10px] flex items-center justify-center font-bold">
+                        {seller.name.charAt(0)}
+                      </div>
+                      <span className="font-semibold text-slate-800">{seller.name}</span>
+                    </div>
+                    <span className="text-[10px] text-slate-400 font-mono font-medium">
+                      {seller.order_count} {seller.order_count === 1 ? 'orden' : 'órdenes'}
+                    </span>
+                  </div>
+
+                  {/* Sales Bar */}
+                  <div className="space-y-1">
+                    <div className="flex justify-between items-center text-[11px]">
+                      <span className="text-slate-500">Ventas Totales</span>
+                      <span className="font-bold text-slate-900 font-mono">S/ {seller.total_sales.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                    </div>
+                    <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-indigo-600 rounded-full transition-all duration-500" 
+                        style={{ width: `${salesPct}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Commission Bar */}
+                  <div className="space-y-1">
+                    <div className="flex justify-between items-center text-[11px]">
+                      <span className="text-slate-500">Comisión Generada</span>
+                      <span className="font-bold text-emerald-600 font-mono">S/ {seller.total_commission.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                    </div>
+                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-emerald-500 rounded-full transition-all duration-500" 
+                        style={{ width: `${commPct}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
         {/* Owed commissions per seller (Liquidity details) */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
-          <div>
+        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+          <div className="mb-4">
             <h3 className="text-sm font-semibold text-slate-800 font-display">
               Desglose de Liquidación por Vendedor
             </h3>
-            <p className="text-[11px] text-slate-400 mb-6">Comisiones pagadas vs. pendientes acumuladas</p>
-            
-            <div className="h-64 w-full text-xs">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={bySeller}
-                  layout="vertical"
-                  margin={{ top: 5, right: 20, left: 20, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                  <XAxis type="number" stroke="#94a3b8" />
-                  <YAxis dataKey="name" type="category" stroke="#94a3b8" width={80} />
-                  <Tooltip
-                    contentStyle={{ background: '#0f172a', borderRadius: '12px', border: 'none', color: '#fff' }}
-                  />
-                  <Legend iconType="circle" />
-                  <Bar dataKey="paid_commission" name="Pagado (S/)" stackId="a" fill="#059669" />
-                  <Bar dataKey="pending_commission" name="Pendiente (S/)" stackId="a" fill="#d97706" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+            <p className="text-[11px] text-slate-400">Comisiones pagadas vs. pendientes acumuladas</p>
+          </div>
+
+          <div className="space-y-3" id="liquidation-desglose">
+            {bySeller.map((seller) => {
+              const totalComm = seller.paid_commission + seller.pending_commission;
+              const paidPct = totalComm > 0 ? (seller.paid_commission / totalComm) * 100 : 0;
+              const pendingPct = totalComm > 0 ? (seller.pending_commission / totalComm) * 100 : 0;
+
+              return (
+                <div key={seller.id} className="p-3 rounded-xl bg-slate-50/50 border border-slate-100 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold text-slate-800">{seller.name}</span>
+                    <span className="text-xs font-mono font-bold text-indigo-700">
+                      S/ {totalComm.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                    </span>
+                  </div>
+
+                  {/* Stacked Bar */}
+                  <div className="h-4 w-full bg-slate-200 rounded-lg overflow-hidden flex">
+                    {seller.paid_commission > 0 && (
+                      <div 
+                        className="h-full bg-emerald-600 hover:opacity-90 transition-opacity cursor-help"
+                        style={{ width: `${paidPct}%` }}
+                        title={`Pagado: S/ ${seller.paid_commission.toFixed(2)}`}
+                      />
+                    )}
+                    {seller.pending_commission > 0 && (
+                      <div 
+                        className="h-full bg-amber-500 hover:opacity-90 transition-opacity cursor-help"
+                        style={{ width: `${pendingPct}%` }}
+                        title={`Pendiente: S/ ${seller.pending_commission.toFixed(2)}`}
+                      />
+                    )}
+                    {totalComm === 0 && (
+                      <div className="h-full w-full bg-slate-100 flex items-center justify-center text-[10px] text-slate-400 font-semibold">
+                        Sin comisiones
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Legend values for this seller */}
+                  <div className="flex flex-wrap items-center gap-3 text-[10px] font-semibold pt-0.5">
+                    <div className="flex items-center gap-1 text-emerald-700">
+                      <span className="h-2 w-2 rounded-full bg-emerald-600"></span>
+                      <span>Pagado: S/ {seller.paid_commission.toFixed(2)}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-amber-700">
+                      <span className="h-2 w-2 rounded-full bg-amber-500"></span>
+                      <span>Pendiente: S/ {seller.pending_commission.toFixed(2)}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
