@@ -4,7 +4,10 @@ import xmlrpc from 'xmlrpc';
 import { Pool } from 'pg';
 import { OdooConfig, ProductCommission, CommissionSaleOrder, CommissionSaleOrderLine, CommissionType } from './src/types';
 
-const DB_PATH = path.join(process.cwd(), 'data', 'commission_db.json');
+const isServerless = process.env.VERCEL || process.env.ZEIT_ENV || false;
+const DB_PATH = isServerless 
+  ? path.join('/tmp', 'commission_db.json')
+  : path.join(process.cwd(), 'data', 'commission_db.json');
 
 interface DbSchema {
   config: OdooConfig;
