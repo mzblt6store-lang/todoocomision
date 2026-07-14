@@ -262,7 +262,7 @@ export function testOdooConnection(config: OdooConfig): Promise<number> {
 }
 
 // Odoo generic API call helper
-function executeKw(
+export function executeKw(
   config: OdooConfig,
   uid: number,
   model: string,

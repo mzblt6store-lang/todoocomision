@@ -13,7 +13,8 @@ import {
   uploadLocalDataToSupabase,
   downloadDataFromSupabase,
   saveProductCommissionToSupabase,
-  saveSaleOrderStatusToSupabase
+  saveSaleOrderStatusToSupabase,
+  executeKw
 } from './server_db';
 import { OdooConfig, ProductCommission, CommissionSaleOrder, DashboardStats, SalespersonStats } from './src/types';
 
@@ -251,6 +252,65 @@ async function startServer() {
       });
     } catch (e: any) {
       res.status(500).json({ error: e.message });
+    }
+  });
+
+  // API ROUTE: Generic Odoo RPC Proxy to allow the browser to safely execute any Odoo query
+  app.post('/api/odoo/rpc-proxy', async (req, res) => {
+    try {
+      const { model, method, args = [], kwargs = {}, uid: providedUid, configOverride } = req.body;
+      const db = loadDb();
+      const configToUse = configOverride ? { ...db.config, ...configOverride } : db.config;
+
+      if (configToUse.isDemo) {
+        // Mock response for Demo Mode to avoid connection failures
+        console.log(`[RPC Proxy - Demo Mode] Simulated call: ${model}.${method}`, { args, kwargs });
+        
+        // Return structured fake data depending on the model/method
+        if (model === 'res.company') {
+          return res.json([
+            { id: 1, name: "Botica Principal S.A.C." },
+            { id: 2, name: "Sucursal Sur Droguería" }
+          ]);
+        }
+        if (model === 'product.template' || model === 'product.product') {
+          return res.json(db.productCommissions);
+        }
+        if (model === 'pos.order') {
+          return res.json(db.salesOrders);
+        }
+        return res.json({ success: true, isDemo: true, message: `Simulación de Odoo exitosa para ${model}.${method}` });
+      }
+
+      // Ensure we have a valid Odoo configuration
+      if (!configToUse.url || !configToUse.db || !configToUse.username) {
+        return res.status(400).json({ error: 'La configuración de Odoo no está completa o no es válida.' });
+      }
+
+      // Get or verify user ID (uid)
+      let uid = Number(providedUid);
+      if (!uid) {
+        try {
+          uid = await testOdooConnection(configToUse);
+        } catch (authErr: any) {
+          return res.status(401).json({ error: `Fallo de autenticación con Odoo: ${authErr.message}` });
+        }
+      }
+
+      if (method === 'authenticate') {
+        return res.json({ success: true, uid });
+      }
+
+      if (!model) {
+        return res.status(400).json({ error: 'El parámetro "model" es obligatorio para ejecutar métodos de Odoo.' });
+      }
+
+      // Execute external call
+      const result = await executeKw(configToUse, uid, model, method, args, kwargs);
+      res.json(result);
+    } catch (e: any) {
+      console.error('Error in Odoo RPC Proxy:', e);
+      res.status(500).json({ error: e.message || 'Error interno en el proxy de Odoo RPC' });
     }
   });
 
