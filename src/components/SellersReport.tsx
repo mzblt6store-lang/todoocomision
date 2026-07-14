@@ -10,6 +10,7 @@ interface SellersReportProps {
 export default function SellersReport({ lastUpdated }: SellersReportProps) {
   const [stats, setStats] = useState<{ summary: DashboardStats; bySeller: SalespersonStats[] } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchStats();
@@ -17,21 +18,26 @@ export default function SellersReport({ lastUpdated }: SellersReportProps) {
 
   const fetchStats = async () => {
     setLoading(true);
+    setError(null);
     try {
       const res = await fetch('/api/reporting/stats');
       if (res.ok) {
         const data = await res.json();
         setStats(data);
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        setError(errData.error || `Error del servidor (status ${res.status})`);
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error('Error fetching reporting stats:', e);
+      setError(e.message || 'Error de red o conexión al servidor.');
     } finally {
       setLoading(false);
     }
   };
 
   const handleExportCSV = () => {
-    if (!stats || stats.bySeller.length === 0) return;
+    if (!stats || !stats.bySeller || stats.bySeller.length === 0) return;
     
     // Build CSV Content
     let csvContent = 'data:text/csv;charset=utf-8,';
@@ -50,12 +56,37 @@ export default function SellersReport({ lastUpdated }: SellersReportProps) {
     document.body.removeChild(link);
   };
 
-  if (loading || !stats) {
+  if (loading) {
     return (
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-12 text-center" id="sellers-report">
         <div className="flex flex-col items-center justify-center gap-3">
           <div className="animate-spin rounded-full h-8 w-8 border-2 border-indigo-600 border-t-transparent"></div>
           <span className="text-slate-500 text-xs font-semibold">Cargando reporte consolidado...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !stats) {
+    return (
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-12 text-center" id="sellers-report">
+        <div className="flex flex-col items-center justify-center gap-4 max-w-md mx-auto">
+          <div className="p-3 bg-rose-50 text-rose-600 rounded-full w-fit">
+            <svg className="h-6 w-6 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-slate-800">No se pudo cargar el reporte consolidado</h3>
+            <p className="text-xs text-slate-500 mt-1">{error || 'Los datos del reporte están vacíos o no disponibles.'}</p>
+          </div>
+          <button
+            type="button"
+            onClick={fetchStats}
+            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow-sm cursor-pointer transition-all"
+          >
+            Reintentar
+          </button>
         </div>
       </div>
     );

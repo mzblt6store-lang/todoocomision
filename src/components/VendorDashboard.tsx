@@ -22,9 +22,14 @@ export default function VendorDashboard({ sales, products }: VendorDashboardProp
   const [activeSellerName, setActiveSellerName] = useState<string>('');
 
   useEffect(() => {
-    if (sellers.length > 0 && !activeSellerId) {
-      setActiveSellerId(sellers[0].id);
-      setActiveSellerName(sellers[0].name);
+    if (sellers.length > 0) {
+      if (!activeSellerId || !sellers.some(s => s.id === activeSellerId)) {
+        setActiveSellerId(sellers[0].id);
+        setActiveSellerName(sellers[0].name);
+      }
+    } else {
+      setActiveSellerId(-1);
+      setActiveSellerName('Sin Ventas');
     }
   }, [sales]);
 
@@ -55,7 +60,7 @@ export default function VendorDashboard({ sales, products }: VendorDashboardProp
     .filter(p => p.commission_type !== 'none')
     .filter(p => p.name.toLowerCase().includes(catalogSearch.toLowerCase()));
 
-  if (!activeSellerId) {
+  if (activeSellerId === null) {
     return (
       <div className="bg-white rounded-2xl border border-slate-100 p-8 text-center" id="vendor-dashboard">
         <span className="text-slate-400 text-xs">Cargando catálogo e información de ventas...</span>
@@ -86,6 +91,9 @@ export default function VendorDashboard({ sales, products }: VendorDashboardProp
             onChange={(e) => handleSellerChange(e.target.value)}
             className="text-xs font-semibold text-slate-800 bg-white border border-slate-200 rounded-lg p-1.5 px-3 outline-none focus:border-indigo-500"
           >
+            {sellers.length === 0 && (
+              <option value="-1">Sin Ventas Registradas</option>
+            )}
             {sellers.map(s => (
               <option key={s.id} value={s.id}>{s.name}</option>
             ))}
