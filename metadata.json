@@ -1,0 +1,8 @@
+{
+  "name": "todooComision",
+  "description": "Sistema de gestión y cálculo de comisiones de ventas de productos integrado con Odoo 14 Community a través de RPC proxy.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

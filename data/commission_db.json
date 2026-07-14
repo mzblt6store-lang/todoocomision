@@ -1,0 +1,494 @@
+{
+  "config": {
+    "url": "https://boticap.facturaclic.pe",
+    "db": "boticap_master",
+    "username": "soporte@facturaclic.pe",
+    "password": "daf60ae61f4073d6bf4839d1964268b2b83179a6",
+    "isDemo": false,
+    "isConnected": false,
+    "lastSyncedProducts": "2026-07-14T14:45:43.583Z",
+    "lastSyncedSales": "2026-07-14T14:45:43.884Z"
+  },
+  "productCommissions": [
+    {
+      "id": 101,
+      "name": "Laptop Pro 15\"",
+      "default_code": "LAP-15-PRO",
+      "list_price": 1200,
+      "commission_type": "percentage",
+      "commission_value": 5
+    },
+    {
+      "id": 102,
+      "name": "Soporte de Laptop Ergonómico",
+      "default_code": "SUP-ERG-01",
+      "list_price": 45,
+      "commission_type": "fixed",
+      "commission_value": 5
+    },
+    {
+      "id": 103,
+      "name": "Monitor Ultrawide 34\"",
+      "default_code": "MON-34-UW",
+      "list_price": 650,
+      "commission_type": "percentage",
+      "commission_value": 3
+    },
+    {
+      "id": 104,
+      "name": "Teclado Mecánico RGB",
+      "default_code": "KEY-MECH-RGB",
+      "list_price": 120,
+      "commission_type": "fixed",
+      "commission_value": 10
+    },
+    {
+      "id": 105,
+      "name": "Mouse Inalámbrico Ergo",
+      "default_code": "MSE-ERGO-W",
+      "list_price": 60,
+      "commission_type": "none",
+      "commission_value": 0
+    },
+    {
+      "id": 106,
+      "name": "Audífonos Noise Cancelling",
+      "default_code": "AUD-NC-900",
+      "list_price": 250,
+      "commission_type": "fixed",
+      "commission_value": 15
+    },
+    {
+      "id": 107,
+      "name": "Silla de Oficina Ejecutiva",
+      "default_code": "CH-EXE-OFF",
+      "list_price": 350,
+      "commission_type": "percentage",
+      "commission_value": 8
+    },
+    {
+      "id": 108,
+      "name": "Escritorio de Madera Roble",
+      "default_code": "DSK-OAK-02",
+      "list_price": 500,
+      "commission_type": "percentage",
+      "commission_value": 10
+    }
+  ],
+  "salesOrders": [
+    {
+      "id": 5000,
+      "name": "SO100",
+      "date_order": "2026-06-14T14:38:47.029Z",
+      "amount_total": 790,
+      "salesperson_id": 11,
+      "salesperson_name": "Ana Gómez",
+      "commission_total": 66,
+      "status": "paid",
+      "lines": [
+        {
+          "id": 1000,
+          "product_id": 107,
+          "product_name": "Silla de Oficina Ejecutiva",
+          "quantity": 2,
+          "price_unit": 350,
+          "price_subtotal": 700,
+          "commission_earned": 56
+        },
+        {
+          "id": 1001,
+          "product_id": 102,
+          "product_name": "Soporte de Laptop Ergonómico",
+          "quantity": 2,
+          "price_unit": 45,
+          "price_subtotal": 90,
+          "commission_earned": 10
+        }
+      ]
+    },
+    {
+      "id": 5001,
+      "name": "SO101",
+      "date_order": "2026-06-16T14:38:47.029Z",
+      "amount_total": 1240,
+      "salesperson_id": 12,
+      "salesperson_name": "Carlos Ruiz",
+      "commission_total": 120,
+      "status": "paid",
+      "lines": [
+        {
+          "id": 1010,
+          "product_id": 108,
+          "product_name": "Escritorio de Madera Roble",
+          "quantity": 2,
+          "price_unit": 500,
+          "price_subtotal": 1000,
+          "commission_earned": 100
+        },
+        {
+          "id": 1011,
+          "product_id": 104,
+          "product_name": "Teclado Mecánico RGB",
+          "quantity": 2,
+          "price_unit": 120,
+          "price_subtotal": 240,
+          "commission_earned": 20
+        }
+      ]
+    },
+    {
+      "id": 5002,
+      "name": "SO102",
+      "date_order": "2026-06-19T14:38:47.029Z",
+      "amount_total": 1000,
+      "salesperson_id": 13,
+      "salesperson_name": "María Torres",
+      "commission_total": 100,
+      "status": "paid",
+      "lines": [
+        {
+          "id": 1020,
+          "product_id": 108,
+          "product_name": "Escritorio de Madera Roble",
+          "quantity": 2,
+          "price_unit": 500,
+          "price_subtotal": 1000,
+          "commission_earned": 100
+        }
+      ]
+    },
+    {
+      "id": 5003,
+      "name": "SO103",
+      "date_order": "2026-06-21T14:38:47.029Z",
+      "amount_total": 620,
+      "salesperson_id": 14,
+      "salesperson_name": "Juan Herrera",
+      "commission_total": 30,
+      "status": "paid",
+      "lines": [
+        {
+          "id": 1030,
+          "product_id": 105,
+          "product_name": "Mouse Inalámbrico Ergo",
+          "quantity": 2,
+          "price_unit": 60,
+          "price_subtotal": 120,
+          "commission_earned": 0
+        },
+        {
+          "id": 1031,
+          "product_id": 106,
+          "product_name": "Audífonos Noise Cancelling",
+          "quantity": 2,
+          "price_unit": 250,
+          "price_subtotal": 500,
+          "commission_earned": 30
+        }
+      ]
+    },
+    {
+      "id": 5004,
+      "name": "SO104",
+      "date_order": "2026-06-23T14:38:47.029Z",
+      "amount_total": 165,
+      "salesperson_id": 11,
+      "salesperson_name": "Ana Gómez",
+      "commission_total": 15,
+      "status": "paid",
+      "lines": [
+        {
+          "id": 1040,
+          "product_id": 104,
+          "product_name": "Teclado Mecánico RGB",
+          "quantity": 1,
+          "price_unit": 120,
+          "price_subtotal": 120,
+          "commission_earned": 10
+        },
+        {
+          "id": 1041,
+          "product_id": 102,
+          "product_name": "Soporte de Laptop Ergonómico",
+          "quantity": 1,
+          "price_unit": 45,
+          "price_subtotal": 45,
+          "commission_earned": 5
+        }
+      ]
+    },
+    {
+      "id": 5005,
+      "name": "SO105",
+      "date_order": "2026-06-25T14:38:47.029Z",
+      "amount_total": 850,
+      "salesperson_id": 12,
+      "salesperson_name": "Carlos Ruiz",
+      "commission_total": 58,
+      "status": "paid",
+      "lines": [
+        {
+          "id": 1050,
+          "product_id": 106,
+          "product_name": "Audífonos Noise Cancelling",
+          "quantity": 2,
+          "price_unit": 250,
+          "price_subtotal": 500,
+          "commission_earned": 30
+        },
+        {
+          "id": 1051,
+          "product_id": 107,
+          "product_name": "Silla de Oficina Ejecutiva",
+          "quantity": 1,
+          "price_unit": 350,
+          "price_subtotal": 350,
+          "commission_earned": 28
+        }
+      ]
+    },
+    {
+      "id": 5006,
+      "name": "SO106",
+      "date_order": "2026-06-27T14:38:47.029Z",
+      "amount_total": 3100,
+      "salesperson_id": 13,
+      "salesperson_name": "María Torres",
+      "commission_total": 176,
+      "status": "paid",
+      "lines": [
+        {
+          "id": 1060,
+          "product_id": 107,
+          "product_name": "Silla de Oficina Ejecutiva",
+          "quantity": 2,
+          "price_unit": 350,
+          "price_subtotal": 700,
+          "commission_earned": 56
+        },
+        {
+          "id": 1061,
+          "product_id": 101,
+          "product_name": "Laptop Pro 15\"",
+          "quantity": 2,
+          "price_unit": 1200,
+          "price_subtotal": 2400,
+          "commission_earned": 120
+        }
+      ]
+    },
+    {
+      "id": 5007,
+      "name": "SO107",
+      "date_order": "2026-06-29T14:38:47.029Z",
+      "amount_total": 900,
+      "salesperson_id": 14,
+      "salesperson_name": "Juan Herrera",
+      "commission_total": 34.5,
+      "status": "paid",
+      "lines": [
+        {
+          "id": 1070,
+          "product_id": 103,
+          "product_name": "Monitor Ultrawide 34\"",
+          "quantity": 1,
+          "price_unit": 650,
+          "price_subtotal": 650,
+          "commission_earned": 19.5
+        },
+        {
+          "id": 1071,
+          "product_id": 106,
+          "product_name": "Audífonos Noise Cancelling",
+          "quantity": 1,
+          "price_unit": 250,
+          "price_subtotal": 250,
+          "commission_earned": 15
+        }
+      ]
+    },
+    {
+      "id": 5008,
+      "name": "SO108",
+      "date_order": "2026-07-01T14:38:47.029Z",
+      "amount_total": 1900,
+      "salesperson_id": 11,
+      "salesperson_name": "Ana Gómez",
+      "commission_total": 116,
+      "status": "paid",
+      "lines": [
+        {
+          "id": 1080,
+          "product_id": 101,
+          "product_name": "Laptop Pro 15\"",
+          "quantity": 1,
+          "price_unit": 1200,
+          "price_subtotal": 1200,
+          "commission_earned": 60
+        },
+        {
+          "id": 1081,
+          "product_id": 107,
+          "product_name": "Silla de Oficina Ejecutiva",
+          "quantity": 2,
+          "price_unit": 350,
+          "price_subtotal": 700,
+          "commission_earned": 56
+        }
+      ]
+    },
+    {
+      "id": 5009,
+      "name": "SO109",
+      "date_order": "2026-07-02T14:38:47.029Z",
+      "amount_total": 210,
+      "salesperson_id": 12,
+      "salesperson_name": "Carlos Ruiz",
+      "commission_total": 10,
+      "status": "paid",
+      "lines": [
+        {
+          "id": 1090,
+          "product_id": 105,
+          "product_name": "Mouse Inalámbrico Ergo",
+          "quantity": 2,
+          "price_unit": 60,
+          "price_subtotal": 120,
+          "commission_earned": 0
+        },
+        {
+          "id": 1091,
+          "product_id": 102,
+          "product_name": "Soporte de Laptop Ergonómico",
+          "quantity": 2,
+          "price_unit": 45,
+          "price_subtotal": 90,
+          "commission_earned": 10
+        }
+      ]
+    },
+    {
+      "id": 5010,
+      "name": "SO110",
+      "date_order": "2026-07-04T14:38:47.029Z",
+      "amount_total": 120,
+      "salesperson_id": 13,
+      "salesperson_name": "María Torres",
+      "commission_total": 10,
+      "status": "pending",
+      "lines": [
+        {
+          "id": 1100,
+          "product_id": 104,
+          "product_name": "Teclado Mecánico RGB",
+          "quantity": 1,
+          "price_unit": 120,
+          "price_subtotal": 120,
+          "commission_earned": 10
+        }
+      ]
+    },
+    {
+      "id": 5011,
+      "name": "SO111",
+      "date_order": "2026-07-07T14:38:47.029Z",
+      "amount_total": 1650,
+      "salesperson_id": 14,
+      "salesperson_name": "Juan Herrera",
+      "commission_total": 67,
+      "status": "pending",
+      "lines": [
+        {
+          "id": 1110,
+          "product_id": 103,
+          "product_name": "Monitor Ultrawide 34\"",
+          "quantity": 2,
+          "price_unit": 650,
+          "price_subtotal": 1300,
+          "commission_earned": 39
+        },
+        {
+          "id": 1111,
+          "product_id": 107,
+          "product_name": "Silla de Oficina Ejecutiva",
+          "quantity": 1,
+          "price_unit": 350,
+          "price_subtotal": 350,
+          "commission_earned": 28
+        }
+      ]
+    },
+    {
+      "id": 5012,
+      "name": "SO112",
+      "date_order": "2026-07-08T14:38:47.029Z",
+      "amount_total": 900,
+      "salesperson_id": 11,
+      "salesperson_name": "Ana Gómez",
+      "commission_total": 34.5,
+      "status": "pending",
+      "lines": [
+        {
+          "id": 1120,
+          "product_id": 106,
+          "product_name": "Audífonos Noise Cancelling",
+          "quantity": 1,
+          "price_unit": 250,
+          "price_subtotal": 250,
+          "commission_earned": 15
+        },
+        {
+          "id": 1121,
+          "product_id": 103,
+          "product_name": "Monitor Ultrawide 34\"",
+          "quantity": 1,
+          "price_unit": 650,
+          "price_subtotal": 650,
+          "commission_earned": 19.5
+        }
+      ]
+    },
+    {
+      "id": 5013,
+      "name": "SO113",
+      "date_order": "2026-07-11T14:38:47.029Z",
+      "amount_total": 60,
+      "salesperson_id": 12,
+      "salesperson_name": "Carlos Ruiz",
+      "commission_total": 0,
+      "status": "pending",
+      "lines": [
+        {
+          "id": 1130,
+          "product_id": 105,
+          "product_name": "Mouse Inalámbrico Ergo",
+          "quantity": 1,
+          "price_unit": 60,
+          "price_subtotal": 60,
+          "commission_earned": 0
+        }
+      ]
+    },
+    {
+      "id": 5014,
+      "name": "SO114",
+      "date_order": "2026-07-13T14:38:47.029Z",
+      "amount_total": 60,
+      "salesperson_id": 13,
+      "salesperson_name": "María Torres",
+      "commission_total": 0,
+      "status": "pending",
+      "lines": [
+        {
+          "id": 1140,
+          "product_id": 105,
+          "product_name": "Mouse Inalámbrico Ergo",
+          "quantity": 1,
+          "price_unit": 60,
+          "price_subtotal": 60,
+          "commission_earned": 0
+        }
+      ]
+    }
+  ]
+}
